@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "quant-platform"
+version = "0.1.0"
+description = "Modular LLM-native Quant Research & Trading Platform"
+authors = ["Rodrigo <rodrigosmgm@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.1.1"
+python-json-logger = "^3.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

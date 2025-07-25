@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: ../
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - PYTHONPATH=/app/src
+    depends_on:
+      - postgres
+      - redis
+      - timescaledb
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: quant_platform
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev_password
+    ports:
+      - "5432:5432"
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    environment:
+      POSTGRES_DB: quant_ts
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev_password
+    ports:
+      - "5433:5432"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
