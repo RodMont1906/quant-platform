@@ -1,7 +1,7 @@
 """Initial clean schema
 
 Revision ID: a80d736ff8c0
-Revises: 
+Revises:
 Create Date: 2025-07-26 10:03:10.155656
 
 """
