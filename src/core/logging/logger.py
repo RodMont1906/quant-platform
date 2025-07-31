@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 from dotenv import load_dotenv
 from pythonjsonlogger import jsonlogger
@@ -8,22 +9,22 @@ from pythonjsonlogger import jsonlogger
 load_dotenv()
 
 
-def get_logger(name: str = "quant-platform") -> logging.Logger:
-    logger = logging.getLogger(name)
-
-    if logger.hasHandlers():
-        return logger  # Avoid duplicate handlers
-
+def configure_logging():
     log_level = os.getenv("LOG_LEVEL", "INFO").upper()
-    logger.setLevel(log_level)
 
-    log_handler = logging.StreamHandler()
-
+    handler = logging.StreamHandler(sys.stdout)
     formatter = jsonlogger.JsonFormatter(
-        ("%(asctime)s %(levelname)s %(name)s %(message)s " "%(filename)s %(lineno)d")
+        "%(asctime)s %(levelname)s %(name)s %(message)s %(filename)s %(lineno)d"
     )
+    handler.setFormatter(formatter)
 
-    log_handler.setFormatter(formatter)
-    logger.addHandler(log_handler)
+    # Explicitly attach loggers used in the platform
+    for logger_name in ["quant-platform", "http_logger", "CostTracker", "LLMRouting"]:
+        log = logging.getLogger(logger_name)
+        log.setLevel(log_level)
+        log.addHandler(handler)
+        log.propagate = False
 
-    return logger
+
+def get_logger(name: str = "quant-platform") -> logging.Logger:
+    return logging.getLogger(name)

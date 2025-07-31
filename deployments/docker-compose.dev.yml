@@ -2,35 +2,47 @@ services:
   app:
     build:
       context: ../
+      dockerfile: Dockerfile
     volumes:
       - ../:/app
+      - ./certs:/certs
     working_dir: /app
+    env_file:
+      - ../.env
     environment:
       - PYTHONPATH=/app/src
+    ports:
+      - "8000:8000"
     depends_on:
       - postgres
       - redis
-      - timescaledb
+    command: >
+      uvicorn src.api.main:app
+      --host 0.0.0.0
+      --port 8000
+      --ssl-keyfile /certs/dev.key
+      --ssl-certfile /certs/dev.crt
+    networks:
+      - quant-bridge
 
   postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: quant_platform
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev_password
-    ports:
-      - "5432:5432"
-
-  timescaledb:
     image: timescale/timescaledb:latest-pg15
     environment:
-      POSTGRES_DB: quant_ts
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5433:5432"
+      - "5432:5432"
+    networks:
+      - quant-bridge
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
+    networks:
+      - quant-bridge
+
+networks:
+  quant-bridge:
+    external: true
