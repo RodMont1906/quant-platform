@@ -48,14 +48,16 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
+      - name: Set MYPYPATH for src layout
+        run: echo "MYPYPATH=src" >> $GITHUB_ENV
+
       - name: Run linters and type checks
         run: |
-          poetry run black --check .
-          poetry run isort --check-only .
-          poetry run flake8 .
+          poetry run black --check src scripts tests
+          poetry run isort --check-only src scripts tests
+          poetry run flake8 src scripts tests
           poetry run mypy src/
 
       - name: Run tests (ignore empty)
         run: |
           poetry run pytest || echo "No tests found. Skipping failure."
-
