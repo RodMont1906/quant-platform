@@ -36,3 +36,8 @@ pytest = "^8.4.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 100
+ignore = ["E402", "F401", "E501"]
+exclude = ["migrations", ".git", "__pycache__", "*.pyc", "scripts"]

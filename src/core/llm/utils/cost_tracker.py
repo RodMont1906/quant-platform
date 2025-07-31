@@ -1,6 +1,5 @@
 # src/core/llm/utils/cost_tracker.py
 import logging
-import time
 
 from tiktoken import encoding_for_model
 

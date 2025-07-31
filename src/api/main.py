@@ -4,7 +4,7 @@ load_dotenv()
 
 from fastapi import FastAPI
 
-from src.api.routes import auth, llm, portfolios, strategies, users
+from src.api.routes import auth, portfolios, strategies, users
 from src.core.logging.http_logger import HTTPLoggingMiddleware
 from src.core.logging.logger import configure_logging
 from src.core.security.middleware import InputValidationMiddleware
@@ -22,7 +22,6 @@ app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(portfolios.router, prefix="/portfolios", tags=["Portfolios"])
 app.include_router(strategies.router, prefix="/strategies", tags=["Strategies"])
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
-app.include_router(llm.router, prefix="/llm", tags=["LLM"])
 
 
 @app.get("/")

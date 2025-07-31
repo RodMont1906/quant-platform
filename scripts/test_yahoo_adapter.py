@@ -1,6 +1,5 @@
 # scripts/test_yahoo_adapter.py
 
-import os
 
 from dotenv import load_dotenv
 

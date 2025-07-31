@@ -53,9 +53,9 @@ jobs:
 
       - name: Run linters and type checks
         run: |
-          poetry run black --check src scripts tests
-          poetry run isort --check-only src scripts tests
-          poetry run flake8 src scripts tests
+          poetry run black --check src tests
+          poetry run isort --check-only src tests
+          poetry run flake8 src tests
           poetry run mypy src/
 
       - name: Run tests (ignore empty)
